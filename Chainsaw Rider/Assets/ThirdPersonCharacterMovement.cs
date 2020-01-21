@@ -18,10 +18,14 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         jump = new Vector3(0.0f, 2.0f, 0.0f);
     }
 
-    void OnCollisionStay()
+    void OnCollisionEnter(Collision col)
     {
-        isGrounded = true;
+        if (col.gameObject.tag == "Ground" && isGrounded == false)
+        {
+            isGrounded = true;
+        }
     }
+
 
     void Update()
     {
