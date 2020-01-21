@@ -20,7 +20,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Ground" && isGrounded == false)
+        if (col.gameObject.tag == ("Ground") && isGrounded == false)
         {
             isGrounded = true;
         }
