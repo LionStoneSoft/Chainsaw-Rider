@@ -10,6 +10,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     public Vector3 jump;
     public float jumpForce = 2.0f;
     public bool isGrounded;
+    private float lean;
     Rigidbody rb;
 
     void Start()
@@ -38,12 +39,28 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         }
     }
 
+
     void PlayerMovement()
     {
         float hor = Input.GetAxis("Horizontal");
         float ver = Input.GetAxis("Vertical");
         transform.Translate(Vector3.forward * Time.deltaTime * Speed * ver);
         transform.Rotate(Vector3.up, Time.deltaTime * TurnSpeed * hor);
+        //Quaternion rotat = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+        if (Input.GetKey(KeyCode.D))
+        {
+            lean = -80;
+        } else if (Input.GetKey(KeyCode.A))
+        {
+            lean = 80;
+        } else
+        {
+            lean = 0;
+        }
+
+        float yAxis = transform.rotation.eulerAngles.y;
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0f, yAxis, lean), 100.0f * Time.deltaTime);
     }
 
 
