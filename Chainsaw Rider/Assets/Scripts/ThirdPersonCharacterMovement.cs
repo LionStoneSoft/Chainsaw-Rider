@@ -11,19 +11,19 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     public float initialVelocity = 0;
 
     //this is our target velocity while accelerating
-    public float finalVelocity = 0.001f;
+    public float finalVelocity = 0.25f;
 
     //this is our current velocity
     public float currentVelocity = 0;
 
     //this is the velocity we add each second while accelerating
-    public float accelerationRate = 0.2f;
+    public float accelerationRate = 0.25f;
 
     //this is the velocity we subtract each second while decelerating
     public float decelerationRate = 0.1f;
-    public float TurnSpeed;
+    public float TurnSpeed = 100f;
     public Vector3 jump;
-    public float jumpForce = 2.0f;
+    public float jumpForce = 10.0f;
     public bool isGrounded;
     private float lean;
     private float leanBack;
