@@ -7,7 +7,20 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
 {
     public static ThirdPersonCharacterMovement instance;
 
-    public float Speed;
+    //this is our target velocity while decelerating
+    public float initialVelocity = 0;
+
+    //this is our target velocity while accelerating
+    public float finalVelocity = 0.001f;
+
+    //this is our current velocity
+    public float currentVelocity = 0;
+
+    //this is the velocity we add each second while accelerating
+    public float accelerationRate = 0.2f;
+
+    //this is the velocity we subtract each second while decelerating
+    public float decelerationRate = 0.1f;
     public float TurnSpeed;
     public Vector3 jump;
     public float jumpForce = 2.0f;
@@ -15,6 +28,8 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     private float lean;
     private float leanBack;
     Rigidbody rb;
+
+ 
 
     void Start()
     {
@@ -37,7 +52,6 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         PlayerMovement();
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-
             rb.AddForce(jump * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
@@ -47,21 +61,42 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     void PlayerMovement()
     {
         float hor = Input.GetAxis("Horizontal");
-        float ver = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward * Time.deltaTime * Speed * ver);
         transform.Rotate(Vector3.up, Time.deltaTime * TurnSpeed * hor);
-        //Quaternion rotat = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
-        if (Input.GetKey(KeyCode.D))
+
+        if (Input.GetKey(KeyCode.W))
         {
-            lean = -80;
-            leanBack = -30;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            lean = 80;
-            leanBack = -30;
+            //add to the current velocity according while accelerating
+            currentVelocity += (accelerationRate * Time.deltaTime);
+            transform.Translate(0, 0, currentVelocity);
         }
         else
+        {
+            //subtract from the current velocity while decelerating
+            currentVelocity -= (decelerationRate * Time.deltaTime);
+            if (currentVelocity > 0)
+            {
+                transform.Translate(0, 0, currentVelocity);
+            }
+            else
+            {
+                transform.Translate(0, 0, 0);
+            }
+        }
+
+        //ensure the velocity never goes out of the initial/final boundaries
+        currentVelocity = Mathf.Clamp(currentVelocity, initialVelocity, finalVelocity);
+
+        //propel the object forward
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            lean = -60;
+            leanBack = 0;
+        } else if (Input.GetKey(KeyCode.A))
+        {
+            lean = 60;
+            leanBack = 0;
+        } else
         {
             lean = 0;
             leanBack = 0;
