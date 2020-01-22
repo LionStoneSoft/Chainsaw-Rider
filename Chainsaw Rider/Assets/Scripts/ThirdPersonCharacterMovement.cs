@@ -5,16 +5,20 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ThirdPersonCharacterMovement : MonoBehaviour
 {
+    public static ThirdPersonCharacterMovement instance;
+
     public float Speed;
     public float TurnSpeed;
     public Vector3 jump;
     public float jumpForce = 2.0f;
     public bool isGrounded;
     private float lean;
+    private float leanBack;
     Rigidbody rb;
 
     void Start()
     {
+        instance = this;
         rb = GetComponent<Rigidbody>();
         jump = new Vector3(0.0f, 2.0f, 0.0f);
     }
@@ -50,17 +54,22 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             lean = -80;
-        } else if (Input.GetKey(KeyCode.A))
+            leanBack = -30;
+        }
+        else if (Input.GetKey(KeyCode.A))
         {
             lean = 80;
-        } else
+            leanBack = -30;
+        }
+        else
         {
             lean = 0;
+            leanBack = 0;
         }
 
         float yAxis = transform.rotation.eulerAngles.y;
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0f, yAxis, lean), 100.0f * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(leanBack, yAxis, lean), 100.0f * Time.deltaTime);
     }
 
 
