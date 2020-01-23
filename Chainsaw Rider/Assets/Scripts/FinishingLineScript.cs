@@ -28,6 +28,10 @@ public class FinishingLineScript : MonoBehaviour
         }
     }
 
+    void CheckpointTrig()
+    {
+
+    }
     void PauseForDuration(float duration)
     {
         paused = true;
