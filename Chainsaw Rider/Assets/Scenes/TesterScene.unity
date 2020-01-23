@@ -192,6 +192,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7013528618460198334, guid: 99b90f48dbc184541bd6c522636bf53f,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7013528618460198335, guid: 99b90f48dbc184541bd6c522636bf53f,
         type: 3}
       propertyPath: TurnSpeed
@@ -517,15 +522,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1151806693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c483f6b002a3c66458434c746aa1bef7, type: 3}
+  m_Script: {fileID: 11500000, guid: 80bc9826e20adeb4791285d5ea14b70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 60
+  TurnForce: 30
+  BackwardsForce: 20
+  TurnSpeed: 100
+  jump: {x: 0, y: 0, z: 0}
+  jumpForce: 10
+  isGrounded: 0
   initialVelocity: 0
   finalVelocity: 0.25
   currentVelocity: 0
   accelerationRate: 0.25
   decelerationRate: 0.1
-  TurnSpeed: 100
-  jump: {x: 0, y: 0, z: 0}
-  jumpForce: 10
-  isGrounded: 0
