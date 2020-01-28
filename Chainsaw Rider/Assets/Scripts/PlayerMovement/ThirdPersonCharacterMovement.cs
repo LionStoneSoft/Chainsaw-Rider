@@ -17,21 +17,6 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     private float leanBack;
     Rigidbody rb;
 
-    //this is our target velocity while decelerating
-    public float initialVelocity = 0;
-
-    //this is our target velocity while accelerating
-    public float finalVelocity = 0.001f;
-
-    //this is our current velocity
-    public float currentVelocity = 0;
-
-    //this is the velocity we add each second while accelerating
-    public float accelerationRate = 0.2f;
-
-    //this is the velocity we subtract each second while decelerating
-    public float decelerationRate = 0.1f;
-
     void Start()
     {
         instance = this;
@@ -54,7 +39,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         {
             rb.AddForce(transform.forward * Speed, ForceMode.Force);
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             rb.AddForce(-transform.forward * BackwardsForce, ForceMode.Force);
         }
@@ -85,31 +70,6 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         float hor = Input.GetAxis("Horizontal");
         transform.Rotate(Vector3.up, Time.deltaTime * TurnSpeed * hor);
 
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    //add to the current velocity according while accelerating
-        //    currentVelocity += (accelerationRate * Time.deltaTime);
-        //    transform.Translate(0, 0, currentVelocity);
-        //}
-        //else
-        //{
-        //    //subtract from the current velocity while decelerating
-        //    currentVelocity -= (decelerationRate * Time.deltaTime);
-        //    if (currentVelocity > 0)
-        //    {
-        //        transform.Translate(0, 0, currentVelocity);
-        //    }
-        //    else
-        //    {
-        //        transform.Translate(0, 0, 0);
-        //    }
-        //}
-
-        ////ensure the velocity never goes out of the initial/final boundaries
-        //currentVelocity = Mathf.Clamp(currentVelocity, initialVelocity, finalVelocity);
-
-        ////propel the object forward
-
         if (Input.GetKey(KeyCode.D))
         {
             lean = -60;
@@ -123,7 +83,15 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         else
         {
             lean = 0;
-            leanBack = 0;
+            if (Input.GetKey(KeyCode.W))
+            {
+                leanBack = 10;
+            }
+            else
+            {
+                leanBack = 0;
+            }
+
         }
 
         float yAxis = transform.rotation.eulerAngles.y;

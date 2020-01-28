@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpeedBoostPowerUp : MonoBehaviour
 {
-    private float playerSpeed = 100f;
+    private float playerSpeed = 140f;
     private float turnSpeed = 20f;
 
 
@@ -23,7 +23,7 @@ public class SpeedBoostPowerUp : MonoBehaviour
     }
     void RegularSpeed()
     {
-        ThirdPersonCharacterMovement.instance.Speed = 60f;
+        ThirdPersonCharacterMovement.instance.Speed = 100f;
         ThirdPersonCharacterMovement.instance.TurnForce = 30f;
     }
 
