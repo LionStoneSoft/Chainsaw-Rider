@@ -14,13 +14,18 @@ public class LapTimeManager : MonoBehaviour
     public GameObject SecondBox;
     public GameObject MilliBox;
 
-    private void Update()
+    void Update()
     {
+        if (Checkpoints.finish == true)
+        {
+            Debug.Log("Completed");
+        }
+
         MilliCount += Time.deltaTime * 10;
         MilliDisplay = MilliCount.ToString("F0");
         MilliBox.GetComponent<Text>().text = "" + MilliDisplay;
 
-        if (MilliCount >= 9)
+        if (MilliCount >= 10)
         {
             MilliCount = 0;
             SecondCount += 1;
@@ -49,5 +54,3 @@ public class LapTimeManager : MonoBehaviour
         }
     }
 }
-
-
