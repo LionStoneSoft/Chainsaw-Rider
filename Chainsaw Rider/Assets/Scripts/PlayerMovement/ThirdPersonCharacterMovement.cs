@@ -17,6 +17,8 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     private float leanBack;
     Rigidbody rb;
 
+    private float fallMultiplier = 2.1f; //Mess around with the number (might make jumps really small, will test this in the future)
+
     void Start()
     {
         instance = this;
@@ -62,6 +64,11 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
             rb.AddForce(jump * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
+
+        if(isGrounded == false)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }  //THIS COULD BE A BETTER JUMP, SOME MORE GRAVITY WHEN PLAYER IS DROPPING IN THE AIR (COMMENT THIS OUT IF YOU DON'T LIKE IT)
     }
 
 
