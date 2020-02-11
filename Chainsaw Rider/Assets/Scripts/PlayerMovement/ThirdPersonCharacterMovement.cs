@@ -17,7 +17,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     private float leanBack;
     Rigidbody rb;
 
-    private float fallMultiplier = 2.1f; //Mess around with the number (might make jumps really small, will test this in the future)
+    public float fallMultiplier = 4f; //Mess around with the number (might make jumps really small, will test this in the future)
 
     void Start()
     {
@@ -28,9 +28,21 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == ("Ground") && isGrounded == false)
+        if (col.gameObject.tag == ("Ground") || col.gameObject.tag == "Ramp") // && isGrounded == false
         {
             isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.tag == ("Ramp"))
+        {
+            isGrounded = false;
         }
     }
 
