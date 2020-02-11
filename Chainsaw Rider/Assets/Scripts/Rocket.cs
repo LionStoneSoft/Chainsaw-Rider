@@ -18,4 +18,13 @@ public class Rocket : MonoBehaviour
 
         rocketRigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, rocketTargetRotation, turn));
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Destroy(gameObject);
+
+        }
+    }
 }

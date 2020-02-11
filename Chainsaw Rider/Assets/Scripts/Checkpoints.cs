@@ -11,6 +11,8 @@ public class Checkpoints : MonoBehaviour
     public static bool checkpointbool2 = false;
     public static bool checkpointbool3 = false;
     public static bool finish = false;
+    public static int lapCounter = 3;
+    public static int lapCounting = 0;
 
     public GameObject canvas;
     public bool pause;
@@ -77,9 +79,19 @@ public class Checkpoints : MonoBehaviour
             case "FinishingLine":
                 if (checkpointbool3 == true)
                 {
-                    finish = true;
-                    canvas.SetActive(true);
-                    PauseForDuration(1.0f);
+                    lapCounting = lapCounting + 1;
+                    if (checkpointbool1 == true && checkpointbool2 == true && checkpointbool3 == true && lapCounting < 3)
+                    {
+                        checkpointbool1 = false;
+                        checkpointbool2 = false;
+                        checkpointbool3 = false;
+                    }
+                    else
+                    {
+                        finish = true;
+                        canvas.SetActive(true);
+                        PauseForDuration(1.0f);
+                    }
                 }
                 break;
         }
