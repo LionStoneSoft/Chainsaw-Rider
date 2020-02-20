@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpeedBoostPowerUp : MonoBehaviour
 {
-    private float playerSpeed = 140f;
+    private float playerSpeed = 270f;
     private float turnSpeed = 20f;
 
 
