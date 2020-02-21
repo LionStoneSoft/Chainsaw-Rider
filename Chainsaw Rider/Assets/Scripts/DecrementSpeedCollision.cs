@@ -6,7 +6,7 @@ public class DecrementSpeedCollision : MonoBehaviour
 {
     private float playerSpeed = 140f;
     private float turnSpeed = 20f;
-    private float halfSpeed = 2f;
+    private float halfSpeed = 20f;
     private bool onGrassPenalty = false; //Grass Penalty is speed reduction being on grass (will change name later)
 
 

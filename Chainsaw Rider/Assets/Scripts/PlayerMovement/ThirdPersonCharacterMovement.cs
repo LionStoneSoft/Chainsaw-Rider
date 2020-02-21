@@ -6,7 +6,7 @@ using UnityEngine;
 public class ThirdPersonCharacterMovement : MonoBehaviour
 {
     public static ThirdPersonCharacterMovement instance;
-    public float Speed = 60;
+    public float Speed = 90;
     public float TurnForce = 30;
     public float BackwardsForce = 20;
     public float TurnSpeed;

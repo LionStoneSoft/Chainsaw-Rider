@@ -7,6 +7,13 @@ public class Respawning : MonoBehaviour
 
     public Transform[] safePoints;
     Transform closestTransform;
+    public static Respawning instance;
+
+
+    void Start()
+    {
+        instance = this;
+    }
 
     void Update()
     {
@@ -17,7 +24,8 @@ public class Respawning : MonoBehaviour
             ResetCar();
         }
     }
-    void ResetCar()
+
+    public void ResetCar()
     {
         // first, find the closest safe place
         float closestDistance = 9999999999;
