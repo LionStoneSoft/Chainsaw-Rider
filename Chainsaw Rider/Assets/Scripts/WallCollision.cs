@@ -23,12 +23,12 @@ public class WallCollision : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         Debug.Log("HELP!");
-        if (ThirdPersonCharacterMovement.instance.Speed < 60 && ThirdPersonCharacterMovement.instance.Speed > 30)
+        if (ThirdPersonCharacterMovement.instance.NormalSpeedMax < 60 && ThirdPersonCharacterMovement.instance.NormalSpeedMax > 30)
         {
             other.gameObject.GetComponent<PlayerHealth>().TakeDamage(slowDamage); //Damage is 20 under 60 speed
             Debug.Log("Hit");
         }
-        if (ThirdPersonCharacterMovement.instance.Speed > 60 && ThirdPersonCharacterMovement.instance.Speed < 90)
+        if (ThirdPersonCharacterMovement.instance.NormalSpeedMax > 60 && ThirdPersonCharacterMovement.instance.NormalSpeedMax < 90)
         {
             other.gameObject.GetComponent<PlayerHealth>().TakeDamage(mediumDamage);
             Debug.Log("Medium Damage, OUCH!");

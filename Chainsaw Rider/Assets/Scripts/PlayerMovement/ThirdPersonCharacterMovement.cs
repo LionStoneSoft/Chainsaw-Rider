@@ -6,18 +6,20 @@ using UnityEngine;
 public class ThirdPersonCharacterMovement : MonoBehaviour
 {
     public static ThirdPersonCharacterMovement instance;
-    public float Speed = 90;
-    public float TurnForce = 30;
-    public float BackwardsForce = 20;
+    public float NormalSpeedMax = 60f;
+    public float MaxSpeed = 120f;
+    public float TurnForce = 30f;
+    public float BackwardsForce = 20f;
     public float TurnSpeed;
     public Vector3 jump;
     public float jumpForce = 2.0f;
     public bool isGrounded;
+
+
     private float lean;
     private float leanBack;
     Rigidbody rb;
 
-    public float fallMultiplier = 4f; //Mess around with the number (might make jumps really small, will test this in the future)
 
     void Start()
     {
@@ -28,21 +30,9 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == ("Ground") || col.gameObject.tag == "Ramp") // && isGrounded == false
+        if (col.gameObject.tag == ("Ground") && isGrounded == false)
         {
             isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
-        }
-    }
-
-    void OnCollisionExit(Collision col)
-    {
-        if (col.gameObject.tag == ("Ramp"))
-        {
-            isGrounded = false;
         }
     }
 
@@ -51,7 +41,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         rb.drag = 0.8f;
         if (Input.GetKey(KeyCode.W))
         {
-            rb.AddForce(transform.forward * Speed, ForceMode.Force);
+            rb.AddForce(transform.forward * NormalSpeedMax, ForceMode.Force);
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -65,7 +55,6 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
         {
             rb.AddForce(-transform.right * TurnForce, ForceMode.Force);
         }
-
     }
 
     void Update()
@@ -77,46 +66,75 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        if(isGrounded == false)
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }  //THIS COULD BE A BETTER JUMP, SOME MORE GRAVITY WHEN PLAYER IS DROPPING IN THE AIR (COMMENT THIS OUT IF YOU DON'T LIKE IT)
-    }
+        MissileReady(); //This is new needs work check down below for the function
 
-
-    void PlayerMovement()
-    {
-        float hor = Input.GetAxis("Horizontal");
-        transform.Rotate(Vector3.up, Time.deltaTime * TurnSpeed * hor);
-
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKeyDown("space") && RandomPowerUp.instance.boostOnPlayer == true) //Checks both keydownspace and boolean from another script
         {
-            lean = -60;
-            leanBack = 0;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            lean = 60;
-            leanBack = 0;
+            SpeedBoostPowerUp boostOnSpace = new SpeedBoostPowerUp();
+            boostOnSpace.SpeedBoostingPowerUp();
+            RandomPowerUp.instance.boostOnPlayer = false; //Set it false again
+            Invoke("SpeedTurnForce", 3); //check this later
         }
         else
         {
-            lean = 0;
-            if (Input.GetKey(KeyCode.W))
+            return;
+        }
+
+        if (NormalSpeedMax > 100)
+        {
+            Invoke("SpeedBackToNormal", 3); //Calls this function then waits for 3 seconds.
+        }
+
+        void PlayerMovement()
+        {
+            float hor = Input.GetAxis("Horizontal");
+            transform.Rotate(Vector3.up, Time.deltaTime * TurnSpeed * hor);
+
+            if (Input.GetKey(KeyCode.D))
             {
-                leanBack = 10;
+                lean = -60;
+                leanBack = 0;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                lean = 60;
+                leanBack = 0;
             }
             else
             {
-                leanBack = 0;
+                lean = 0;
+                if (Input.GetKey(KeyCode.W))
+                {
+                    leanBack = 10;
+                }
+                else
+                {
+                    leanBack = 0;
+                }
             }
-
+            float yAxis = transform.rotation.eulerAngles.y;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(leanBack, yAxis, lean), 100.0f * Time.deltaTime);
         }
-
-        float yAxis = transform.rotation.eulerAngles.y;
-
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(leanBack, yAxis, lean), 100.0f * Time.deltaTime);
     }
 
 
+    void MissileReady() //Missile script
+    {
+        if (Input.GetKeyDown("space") && RocketPowerUp.instance.missileOnPlayer == true)
+        {
+            Debug.Log("Worked");
+            Rocket missileOnPress = new Rocket();
+            missileOnPress.rocketOnPlayers();
+        }
+    }
+    void SpeedTurnForce()
+    {
+        NormalSpeedMax = 60;
+        TurnForce = 30;
+    }
+
+    void SpeedBackToNormal() //Speed back to normal after the speed boost (Can Invoke this)
+    {
+        NormalSpeedMax = 60;
+    }
 }
