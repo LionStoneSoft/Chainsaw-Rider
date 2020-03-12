@@ -5,7 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ThirdPersonCharacterMovement : MonoBehaviour
 {
+    // [SerializeField] float normalSpeedMax = 60f;
     public static ThirdPersonCharacterMovement instance;
+    //   PlayerHealth respawnChecking = new PlayerHealth();
     public float NormalSpeedMax = 60f;
     public float MaxSpeed = 120f;
     public float TurnForce = 30f;
@@ -14,6 +16,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     public Vector3 jump;
     public float jumpForce = 2.0f;
     public bool isGrounded;
+    public bool isNotRespawning = false;
 
 
     private float lean;
@@ -39,26 +42,37 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.drag = 0.8f;
-        if (Input.GetKey(KeyCode.W))
         {
-            rb.AddForce(transform.forward * NormalSpeedMax, ForceMode.Force);
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            rb.AddForce(-transform.forward * BackwardsForce, ForceMode.Force);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(transform.right * TurnForce, ForceMode.Force);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddForce(-transform.right * TurnForce, ForceMode.Force);
+            if (isNotRespawning == false)
+            {
+                if (Input.GetKey(KeyCode.W) && isNotRespawning == false)
+                {
+                    rb.AddForce(transform.forward * NormalSpeedMax, ForceMode.Force);
+                }
+                if (Input.GetKey(KeyCode.LeftShift) && isNotRespawning == false)
+                {
+                    rb.AddForce(-transform.forward * BackwardsForce, ForceMode.Force);
+                }
+                if (Input.GetKey(KeyCode.D) && isNotRespawning == false)
+                {
+                    rb.AddForce(transform.right * TurnForce, ForceMode.Force);
+                }
+                if (Input.GetKey(KeyCode.A) && isNotRespawning == false)
+                {
+                    rb.AddForce(-transform.right * TurnForce, ForceMode.Force);
+                }
+            }
+            else
+            {
+                //If isNotRespawning = false, allow movement. If it's true, no movement.
+                Debug.Log("Respawning dont move");
+            }
         }
     }
 
     void Update()
     {
+
         PlayerMovement();
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
