@@ -5,10 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ThirdPersonCharacterMovement : MonoBehaviour
 {
-    // [SerializeField] float normalSpeedMax = 60f;
+    [SerializeField] [Range(0.0f, 120f)] public float NormalSpeedMax = 60f;
     public static ThirdPersonCharacterMovement instance;
-    //   PlayerHealth respawnChecking = new PlayerHealth();
-    public float NormalSpeedMax = 60f;
+    public Rigidbody _playerBody;
     public float MaxSpeed = 120f;
     public float TurnForce = 30f;
     public float BackwardsForce = 20f;
@@ -18,10 +17,10 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
     public bool isGrounded;
     public bool isNotRespawning = false;
 
-
     private float lean;
     private float leanBack;
-    Rigidbody rb;
+    public Rigidbody rb;
+    public Quaternion currentAngle;
 
 
     void Start()
@@ -41,6 +40,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        currentAngle = this.transform.rotation;
         rb.drag = 0.8f;
         {
             if (isNotRespawning == false)
@@ -48,6 +48,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.W) && isNotRespawning == false)
                 {
                     rb.AddForce(transform.forward * NormalSpeedMax, ForceMode.Force);
+                    Debug.Log(rb.velocity.magnitude);
                 }
                 if (Input.GetKey(KeyCode.LeftShift) && isNotRespawning == false)
                 {
@@ -56,6 +57,14 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.D) && isNotRespawning == false)
                 {
                     rb.AddForce(transform.right * TurnForce, ForceMode.Force);
+                    if (this.rb.velocity.magnitude < 3)
+                    {
+                        TurnSpeed = 60f;
+                    } //Turn speed more drastic when lower speed
+                    else
+                    {
+                        TurnSpeed = 20f;
+                    }
                 }
                 if (Input.GetKey(KeyCode.A) && isNotRespawning == false)
                 {
@@ -141,6 +150,7 @@ public class ThirdPersonCharacterMovement : MonoBehaviour
             missileOnPress.rocketOnPlayers();
         }
     }
+
     void SpeedTurnForce()
     {
         NormalSpeedMax = 60;
